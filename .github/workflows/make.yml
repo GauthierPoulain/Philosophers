@@ -12,5 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: make
+      - name: make philo
+        working-directory: ./philo
         run: make
