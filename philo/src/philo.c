@@ -1,7 +1,12 @@
 #include "../includes/philo.h"
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
-	ft_putline("salut");
-	return (0);
+	t_manager	*manager;
+
+	setbuf(stderr, NULL);
+	setbuf(stdout, NULL);
+	manager = init(argc - 1, argv + 1);
+	spawn_philos(manager);
+	close_philo(EXIT_SUCCESS, manager);
 }

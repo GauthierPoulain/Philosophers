@@ -28,7 +28,7 @@ MAKE = make --no-print-directory
 CFLAGS = -Wall -Wextra -Werror
 # CFLAGS += -O3 -fno-builtin
 CFLAGS += -g
-CFLAGS += -fsanitize=address
+# CFLAGS += -fsanitize=address
 
 CLIBS = -lpthread
 
@@ -36,16 +36,25 @@ CLIBS = -lpthread
 HEADERS = \
 	./includes/philo.h
 
-PHILO_SRC = \
-	./src/philo.c \
-
 PHILO_LIB = \
+	./lib/checks.c \
 	./lib/len.c \
+	./lib/memory.c \
+	./lib/nb_convert.c \
 	./lib/print.c \
 
+PHILO_SRC = \
+	./src/close.c \
+	./src/forks.c \
+	./src/init.c \
+	./src/philo.c \
+	./src/philosopher.c \
+	./src/print.c \
+	./src/time.c \
+
 SRCS = \
-	$(PHILO_SRC) \
 	$(PHILO_LIB) \
+	$(PHILO_SRC) \
 
 OBJS = $(SRCS:%.c=%.o)
 
@@ -71,11 +80,7 @@ fclean: clean
 re: fclean
 	@$(MAKE) all
 
-run: all
-	@printf "[ $(_MAGENTA)$(_BOLD)running$(_END) ] $(_BLUE)$(_BOLD)$(NAME)...$(_END)\n"
-	@./$(NAME)
-
 norm:
 	@norminette
 
-.PHONY: all clean fclean re run norm
+.PHONY: all clean fclean re norm
