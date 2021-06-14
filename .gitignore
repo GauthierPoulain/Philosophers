@@ -1,0 +1,15 @@
+*.o
+*.a
+*.out
+*.tmp
+*.log
+.DS_Store
+*.dSYM
+*.hex
+*.gcov
+*.gcno
+*.gcda
+*.swp
+
+philo
+!philo/
