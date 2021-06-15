@@ -12,9 +12,11 @@ void	ft_putstr(int fd, char *str)
 
 void	ft_putcolor(int fd, char *str, char *color)
 {
-	ft_putstr(fd, color);
+	if (PRINT_COLORS)
+		ft_putstr(fd, color);
 	ft_putstr(fd, str);
-	ft_putstr(fd, _END);
+	if (PRINT_COLORS)
+		ft_putstr(fd, _END);
 }
 
 static void	ft_printnbr(int fd, int nb)

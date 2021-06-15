@@ -32,8 +32,8 @@ static void	delete_philos(t_manager *manager)
 		if (manager->philo[i])
 		{
 			pthread_join(manager->philo[i]->pthread, NULL);
-			pthread_mutex_destroy(&manager->philo[i]->left_fork);
-			pthread_mutex_destroy(&manager->philo[i]->right_fork);
+			free(manager->philo[i]->left_fork);
+			pthread_mutex_destroy(manager->philo[i]->left_fork);
 			free(manager->philo[i]);
 		}
 		i++;
@@ -47,6 +47,8 @@ void	close_philo(int code, t_manager *manager)
 		if (manager->philo)
 		{
 			delete_philos(manager);
+			pthread_mutex_destroy(manager->mutex_print);
+			free(manager->mutex_print);
 			free(manager->philo);
 		}
 		free(manager);

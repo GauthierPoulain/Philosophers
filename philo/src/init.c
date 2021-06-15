@@ -19,9 +19,17 @@ static void	init_philos(t_manager *manager)
 	i = 1;
 	while (i <= manager->nb_philo)
 	{
-		create_philo(manager, i);
+		manager->philo[i] = malloc(sizeof(t_philo));
+		if (!manager->philo[i])
+			set_error(ERR_MALLOC, manager);
+		manager->philo[i]->left_fork = malloc(sizeof(pthread_mutex_t));
+		if (!manager->philo[i]->left_fork)
+			set_error(ERR_MALLOC, manager);
 		i++;
 	}
+	i = 1;
+	while (i <= manager->nb_philo)
+		philo_create(manager, i++);
 }
 
 static void	set_values(t_manager *manager, char *argv[])
@@ -42,7 +50,7 @@ t_manager	*init(int argc, char *argv[])
 	t_manager	*manager;
 
 	manager = NULL;
-	if (argc < 3 || argc > 4)
+	if (argc < 4 || argc > 5)
 		set_error(ERR_ARGSNUMBER, manager);
 	else if (!check_args(argv))
 		set_error(ERR_INVALIDARG, manager);
@@ -50,9 +58,12 @@ t_manager	*init(int argc, char *argv[])
 	if (!manager)
 		set_error(ERR_MALLOC, manager);
 	set_values(manager, argv);
-	if (pthread_mutex_init(&manager->mutex_print, NULL) != 0)
+	manager->mutex_print = malloc(sizeof(pthread_mutex_t));
+	if (!manager->mutex_print)
+		set_error(ERR_MALLOC, manager);
+	if (pthread_mutex_init(manager->mutex_print, NULL) != 0)
 		set_error(ERR_MUTEX, manager);
-	manager->philo = malloc(sizeof(t_philo *) * (manager->nb_philo + 1));
+	manager->philo = malloc(sizeof(t_philo) * (manager->nb_philo + 1));
 	if (!manager->philo)
 		set_error(ERR_MALLOC, manager);
 	init_philos(manager);

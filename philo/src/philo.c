@@ -7,6 +7,6 @@ int	main(int argc, char *argv[])
 	setbuf(stderr, NULL);
 	setbuf(stdout, NULL);
 	manager = init(argc - 1, argv + 1);
-	spawn_philos(manager);
+	philo_spawn(manager);
 	close_philo(EXIT_SUCCESS, manager);
 }

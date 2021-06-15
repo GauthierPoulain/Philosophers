@@ -31,13 +31,14 @@
 # define	_END				"\033[1;0m"
 
 # define	PRINT_SPAWN			1
+# define	PRINT_COLORS		1
 
-# define	MSG_FORK			1
-# define	MSG_EAT				2
-# define	MSG_SLEEP			3
-# define	MSG_THINK			4
-# define	MSG_DIED			5
-# define	MSG_SPAWN			6
+# define	MSG_SPAWN			1
+# define	MSG_FORK			2
+# define	MSG_EAT				3
+# define	MSG_SLEEP			4
+# define	MSG_THINK			5
+# define	MSG_DIED			6
 
 # define	ERR_ARGSNUMBER		1
 # define	ERR_INVALIDARG		2
@@ -53,8 +54,8 @@ typedef struct s_philo
 	struct s_manager	*manager;
 	struct s_philo		*prev_philo;
 	struct s_philo		*next_philo;
-	pthread_mutex_t		left_fork;
-	pthread_mutex_t		right_fork;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
 }				t_philo;
 
 typedef struct s_manager
@@ -66,7 +67,7 @@ typedef struct s_manager
 	long long		time_to_eat;
 	long long		time_to_sleep;
 	int				nb_eat;
-	pthread_mutex_t	mutex_print;
+	pthread_mutex_t	*mutex_print;
 }				t_manager;
 
 int			ft_strcmp(const char *s1, const char *s2);
@@ -91,10 +92,12 @@ void		close_philo(int code, t_manager *manager);
 
 t_manager	*init(int argc, char *argv[]);
 
-void		create_philo(t_manager *manager, int id);
-void		spawn_philos(t_manager *manager);
+void		philo_create(t_manager *manager, int id);
+void		philo_spawn(t_manager *manager);
 
-void		print(t_philo *philo, int type);
+void		*philo_main(void *philo_raw);
+
+void		philo_log(t_philo *philo, int type);
 
 long long	get_time_ms(void);
 

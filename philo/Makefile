@@ -47,8 +47,9 @@ PHILO_SRC = \
 	./src/close.c \
 	./src/forks.c \
 	./src/init.c \
+	./src/philo_init.c \
+	./src/philo_tasks.c \
 	./src/philo.c \
-	./src/philosopher.c \
 	./src/print.c \
 	./src/time.c \
 
