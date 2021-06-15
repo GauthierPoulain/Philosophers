@@ -15,15 +15,11 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->left_fork);
 	philo->timestamp = get_time_ms();
 	philo_log(philo, MSG_FORK);
-	if (!philo->right_fork)
-	{
-		pthread_mutex_unlock(&philo->left_fork);
-		return ;
-	}
 	pthread_mutex_lock(philo->right_fork);
 	philo->timestamp = get_time_ms();
 	philo_log(philo, MSG_FORK);
 	philo->nb_eat++;
+	philo->last_eat = get_time_ms();
 	philo->timestamp = get_time_ms();
 	philo_log(philo, MSG_EAT);
 	usleep(philo->manager->time_to_eat * 1000);
@@ -49,7 +45,11 @@ void	*philo_monitor(void *philo_raw)
 
 	philo = philo_raw;
 	while (get_time_ms() - philo->last_eat < philo->manager->time_to_die)
-		;
+	{
+		printf("%lld\n", get_time_ms() - philo->last_eat);
+		usleep(1000);
+	}
+	printf("[%lld]\n", get_time_ms() - philo->last_eat);
 	philo_die(philo);
 	return (NULL);
 }
