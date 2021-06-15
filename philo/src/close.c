@@ -3,8 +3,10 @@
 void	set_error(int code, t_manager *manager)
 {
 	if (code == ERR_ARGSNUMBER)
-		ft_putstr(STDERR_FILENO,
-			"invalid args NUMBER [nb philo] [t to die] [t to eat] (nb eat)\n");
+	{
+		ft_putstr(STDERR_FILENO, "invalid args NUMBER [nb philo] [t to");
+		ft_putstr(STDERR_FILENO, " die] [t to eat] [t to sleep] (nb eat)\n");
+	}
 	else if (code == ERR_INVALIDARG)
 		ft_putstr(STDERR_FILENO, "invalid args\n");
 	else if (code == ERR_MALLOC)
@@ -19,7 +21,8 @@ void	set_error(int code, t_manager *manager)
 		ft_putnbr(STDERR_FILENO, code);
 		ft_putchar(STDERR_FILENO, '\n');
 	}
-	close_philo(EXIT_FAILURE, manager);
+	close_philo(manager);
+	manager->error = true;
 }
 
 static void	delete_philos(t_manager *manager)
@@ -32,26 +35,19 @@ static void	delete_philos(t_manager *manager)
 		if (manager->philo[i])
 		{
 			pthread_join(manager->philo[i]->pthread, NULL);
-			free(manager->philo[i]->left_fork);
-			pthread_mutex_destroy(manager->philo[i]->left_fork);
+			pthread_mutex_destroy(&manager->philo[i]->left_fork);
 			free(manager->philo[i]);
 		}
 		i++;
 	}
 }
 
-void	close_philo(int code, t_manager *manager)
+void	close_philo(t_manager *manager)
 {
-	if (manager)
+	if (manager->philo)
 	{
-		if (manager->philo)
-		{
-			delete_philos(manager);
-			pthread_mutex_destroy(manager->mutex_print);
-			free(manager->mutex_print);
-			free(manager->philo);
-		}
-		free(manager);
+		delete_philos(manager);
+		pthread_mutex_destroy(&manager->mutex_print);
+		free(manager->philo);
 	}
-	exit(code);
 }

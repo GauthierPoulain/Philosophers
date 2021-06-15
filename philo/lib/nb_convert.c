@@ -10,12 +10,12 @@ static int	ft_atoi_calcsign(int pos, int neg)
 		return (0);
 }
 
-int	ft_atoi(const char *str)
+long long	ft_atoi(const char *str)
 {
 	char		*tstr;
 	int			pos;
 	int			neg;
-	int			res;
+	long long	res;
 
 	if (!str)
 		return (0);

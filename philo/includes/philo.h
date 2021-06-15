@@ -9,6 +9,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <stdarg.h>
+# include <time.h>
 # include <sys/time.h>
 
 # define	_DEFAULT			"\033[1;39m"
@@ -46,20 +47,30 @@
 # define	ERR_MUTEX			4
 # define	ERR_THREAD			5
 
+typedef struct s_monitor
+{
+	pthread_t		pthread;
+	struct s_philo	*philo;
+}				t_monitor;
+
 typedef struct s_philo
 {
+	t_monitor			monitor;
 	int					id;
 	pthread_t			pthread;
 	long long			timestamp;
+	int					nb_eat;
+	long long			last_eat;
 	struct s_manager	*manager;
 	struct s_philo		*prev_philo;
 	struct s_philo		*next_philo;
-	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		left_fork;
 	pthread_mutex_t		*right_fork;
 }				t_philo;
 
 typedef struct s_manager
 {
+	bool			error;
 	t_philo			**philo;
 	int				nb_philo;
 	int				nb_forks;
@@ -67,7 +78,9 @@ typedef struct s_manager
 	long long		time_to_eat;
 	long long		time_to_sleep;
 	int				nb_eat;
-	pthread_mutex_t	*mutex_print;
+	bool			die;
+	pthread_mutex_t	mutex_die;
+	pthread_mutex_t	mutex_print;
 }				t_manager;
 
 int			ft_strcmp(const char *s1, const char *s2);
@@ -79,7 +92,7 @@ size_t		ft_nblen(long long nb);
 
 void		ft_bzero(void *s, size_t n);
 
-int			ft_atoi(const char *str);
+long long	ft_atoi(const char *str);
 char		*ft_itoa(long long n);
 
 void		ft_putchar(int fd, char c);
@@ -88,9 +101,9 @@ void		ft_putcolor(int fd, char *str, char *color);
 void		ft_putnbr(int fd, long long nb);
 
 void		set_error(int code, t_manager *manager);
-void		close_philo(int code, t_manager *manager);
+void		close_philo(t_manager *manager);
 
-t_manager	*init(int argc, char *argv[]);
+void		init(t_manager *manager, int argc, char *argv[]);
 
 void		philo_create(t_manager *manager, int id);
 void		philo_spawn(t_manager *manager);

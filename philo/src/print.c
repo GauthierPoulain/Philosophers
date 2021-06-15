@@ -4,7 +4,7 @@ void	philo_log(t_philo *philo, int type)
 {
 	if (type == PRINT_SPAWN && !PRINT_SPAWN)
 		return ;
-	pthread_mutex_lock(philo->manager->mutex_print);
+	pthread_mutex_lock(&philo->manager->mutex_print);
 	ft_putnbr(STDOUT_FILENO, get_time_ms() - philo->timestamp);
 	ft_putchar(STDOUT_FILENO, ' ');
 	ft_putnbr(STDOUT_FILENO, philo->id);
@@ -26,5 +26,5 @@ void	philo_log(t_philo *philo, int type)
 		ft_putnbr(STDOUT_FILENO, type);
 		ft_putchar(STDOUT_FILENO, '\n');
 	}
-	pthread_mutex_unlock(philo->manager->mutex_print);
+	pthread_mutex_unlock(&philo->manager->mutex_print);
 }
