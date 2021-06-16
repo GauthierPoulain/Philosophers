@@ -2,9 +2,12 @@
 
 void	philo_log(t_philo *philo, int type)
 {
-	if (type == PRINT_SPAWN && !PRINT_SPAWN)
+	if ((type == PRINT_SPAWN && !PRINT_SPAWN)
+		|| philo->manager->die || !philo->alive)
 		return ;
 	pthread_mutex_lock(&philo->manager->mutex_print);
+	if (!philo->manager || philo->manager->die)
+		return ;
 	ft_putnbr(STDOUT_FILENO, get_time_ms() - philo->timestamp);
 	ft_putchar(STDOUT_FILENO, ' ');
 	ft_putnbr(STDOUT_FILENO, philo->id);
@@ -21,10 +24,7 @@ void	philo_log(t_philo *philo, int type)
 	else if (type == MSG_DIED)
 		ft_putcolor(STDOUT_FILENO, " died\n", _RED);
 	else
-	{
-		ft_putcolor(STDOUT_FILENO, "u ndefined type : ", _RED);
-		ft_putnbr(STDOUT_FILENO, type);
-		ft_putchar(STDOUT_FILENO, '\n');
-	}
-	pthread_mutex_unlock(&philo->manager->mutex_print);
+		ft_putcolor(STDOUT_FILENO, "undefined type\n", _RED);
+	if (type != MSG_DIED && philo->manager)
+		pthread_mutex_unlock(&philo->manager->mutex_print);
 }

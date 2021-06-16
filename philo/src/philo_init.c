@@ -17,8 +17,7 @@ void	philo_create(t_manager *manager, int id)
 		philo->next_philo = manager->philo[id + 1];
 	else if (id == manager->nb_philo)
 		philo->next_philo = manager->philo[1];
-	if (pthread_mutex_init(&philo->left_fork, NULL) != 0)
-		set_error(ERR_MUTEX, manager);
+	pthread_mutex_init(&philo->left_fork, NULL);
 	philo->right_fork = &philo->next_philo->left_fork;
 }
 
@@ -29,9 +28,8 @@ void	philo_spawn(t_manager *manager)
 	i = 1;
 	while (i <= manager->nb_philo)
 	{
-		if (pthread_create(&manager->philo[i]->pthread, NULL,
-				philo_main, manager->philo[i]) != 0)
-			set_error(ERR_THREAD, manager);
+		pthread_create(&manager->philo[i]->pthread, NULL,
+			philo_main, manager->philo[i]);
 		i++;
 	}
 }

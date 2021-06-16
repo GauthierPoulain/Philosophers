@@ -26,8 +26,8 @@ CC = clang
 MAKE = make --no-print-directory
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -O3
-# CFLAGS += -g
+# CFLAGS += -O3 -fno-builtin
+CFLAGS += -g
 # CFLAGS += -fsanitize=address
 
 CLIBS = -lpthread
@@ -47,6 +47,7 @@ PHILO_SRC = \
 	./src/close.c \
 	./src/forks.c \
 	./src/init.c \
+	./src/philo_die.c \
 	./src/philo_init.c \
 	./src/philo_tasks.c \
 	./src/philo.c \

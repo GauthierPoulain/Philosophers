@@ -44,16 +44,13 @@ static void	set_values(t_manager *manager, char *argv[])
 
 void	init(t_manager *manager, int argc, char *argv[])
 {
-	manager->die = false;
 	if (argc < 4 || argc > 5)
 		return (set_error(ERR_ARGSNUMBER, manager));
 	else if (!check_args(argv))
 		return (set_error(ERR_INVALIDARG, manager));
 	set_values(manager, argv);
-	if (pthread_mutex_init(&manager->mutex_print, NULL) != 0)
-		return (set_error(ERR_MUTEX, manager));
-	if (pthread_mutex_init(&manager->mutex_die, NULL) != 0)
-		return (set_error(ERR_MUTEX, manager));
+	pthread_mutex_init(&manager->mutex_print, NULL);
+	pthread_mutex_init(&manager->mutex_die, NULL);
 	manager->philo = malloc(sizeof(t_philo) * (manager->nb_philo + 1));
 	if (!manager->philo)
 		return (set_error(ERR_MALLOC, manager));

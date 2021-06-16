@@ -11,36 +11,50 @@ void	set_error(int code, t_manager *manager)
 		ft_putstr(STDERR_FILENO, "invalid args\n");
 	else if (code == ERR_MALLOC)
 		ft_putstr(STDERR_FILENO, "malloc failure\n");
-	else if (code == ERR_MUTEX)
-		ft_putstr(STDERR_FILENO, "mutex failure\n");
-	else if (code == ERR_THREAD)
-		ft_putstr(STDERR_FILENO, "thread failure\n");
 	else
 	{
 		ft_putstr(STDERR_FILENO, "undefined error, code = ");
 		ft_putnbr(STDERR_FILENO, code);
 		ft_putchar(STDERR_FILENO, '\n');
 	}
-	close_philo(manager);
 	manager->error = true;
+}
+
+static void	*unlock_mutexs(void *manager_raw)
+{
+	t_manager	*manager;
+
+	manager = manager_raw;
+	while (manager->die)
+	{
+		pthread_mutex_unlock(&manager->mutex_die);
+		pthread_mutex_unlock(&manager->mutex_print);
+		usleep(10);
+	}
+	return (NULL);
 }
 
 static void	delete_philos(t_manager *manager)
 {
-	int	i;
+	int			i;
 
-	i = 1;
-	while (i <= manager->nb_philo)
-	{
-		if (manager->philo[i])
-			pthread_join(manager->philo[i]->pthread, NULL);
-		i++;
-	}
 	i = 1;
 	while (i <= manager->nb_philo)
 	{
 		if (manager->philo[i])
 		{
+			manager->philo[i]->right_fork = NULL;
+			pthread_mutex_unlock(&manager->philo[i]->left_fork);
+		}
+		i++;
+	}
+	i = 1;
+	pthread_create(&manager->unlocker, NULL, unlock_mutexs, manager);
+	while (i <= manager->nb_philo)
+	{
+		if (manager->philo[i])
+		{
+			pthread_join(manager->philo[i]->pthread, NULL);
 			pthread_mutex_destroy(&manager->philo[i]->left_fork);
 			free(manager->philo[i]);
 		}
@@ -50,10 +64,14 @@ static void	delete_philos(t_manager *manager)
 
 void	close_philo(t_manager *manager)
 {
-	if (manager->philo)
+	if (manager->philo && !manager->error)
 	{
+		manager->die = true;
 		delete_philos(manager);
-		pthread_mutex_destroy(&manager->mutex_print);
 		free(manager->philo);
+		manager->die = false;
+		pthread_join(manager->unlocker, NULL);
+		pthread_mutex_destroy(&manager->mutex_print);
+		pthread_mutex_destroy(&manager->mutex_die);
 	}
 }

@@ -31,8 +31,8 @@
 
 # define	_END				"\033[1;0m"
 
-# define	PRINT_SPAWN			1
-# define	PRINT_COLORS		1
+# define	PRINT_SPAWN			0
+# define	PRINT_COLORS		0
 
 # define	MSG_SPAWN			1
 # define	MSG_FORK			2
@@ -44,8 +44,6 @@
 # define	ERR_ARGSNUMBER		1
 # define	ERR_INVALIDARG		2
 # define	ERR_MALLOC			3
-# define	ERR_MUTEX			4
-# define	ERR_THREAD			5
 
 typedef struct s_monitor
 {
@@ -58,6 +56,7 @@ typedef struct s_philo
 	t_monitor			monitor;
 	int					id;
 	pthread_t			pthread;
+	bool				alive;
 	long long			timestamp;
 	int					nb_eat;
 	long long			last_eat;
@@ -79,6 +78,7 @@ typedef struct s_manager
 	long long		time_to_sleep;
 	int				nb_eat;
 	bool			die;
+	pthread_t		unlocker;	
 	pthread_mutex_t	mutex_die;
 	pthread_mutex_t	mutex_print;
 }				t_manager;
@@ -104,6 +104,8 @@ void		set_error(int code, t_manager *manager);
 void		close_philo(t_manager *manager);
 
 void		init(t_manager *manager, int argc, char *argv[]);
+
+void		*philo_monitor(void *philo_raw);
 
 void		philo_create(t_manager *manager, int id);
 void		philo_spawn(t_manager *manager);
