@@ -50,7 +50,6 @@ void	init(t_manager *manager, int argc, char *argv[])
 		return (set_error(ERR_INVALIDARG, manager));
 	set_values(manager, argv);
 	pthread_mutex_init(&manager->mutex_print, NULL);
-	pthread_mutex_init(&manager->mutex_die, NULL);
 	manager->philo = malloc(sizeof(t_philo) * (manager->nb_philo + 1));
 	if (!manager->philo)
 		return (set_error(ERR_MALLOC, manager));

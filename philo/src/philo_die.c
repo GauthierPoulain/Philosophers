@@ -6,8 +6,9 @@ static void	philo_die(t_philo *philo)
 		pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
 	philo_log(philo, MSG_DIED);
-	pthread_mutex_unlock(&philo->manager->mutex_die);
 	philo->alive = false;
+	philo->manager->die = true;
+	pthread_mutex_unlock(&philo->manager->mutex_print);
 }
 
 void	*philo_monitor(void *philo_raw)

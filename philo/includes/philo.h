@@ -4,12 +4,9 @@
 # define _DEFAULT_SOURCE
 
 # include <pthread.h>
-# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include <stdarg.h>
-# include <time.h>
 # include <sys/time.h>
 
 # define	_DEFAULT			"\033[1;39m"
@@ -78,8 +75,6 @@ typedef struct s_manager
 	long long		time_to_sleep;
 	int				nb_eat;
 	bool			die;
-	pthread_t		unlocker;	
-	pthread_mutex_t	mutex_die;
 	pthread_mutex_t	mutex_print;
 }				t_manager;
 

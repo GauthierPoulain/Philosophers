@@ -26,12 +26,11 @@ CC = clang
 MAKE = make --no-print-directory
 
 CFLAGS = -Wall -Wextra -Werror
-# CFLAGS += -O3 -fno-builtin
-CFLAGS += -g
+CFLAGS += -O3 -fno-builtin
+# CFLAGS += -g
 # CFLAGS += -fsanitize=address
 
 CLIBS = -lpthread
-
 
 HEADERS = \
 	./includes/philo.h
