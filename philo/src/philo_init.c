@@ -8,6 +8,7 @@ void	philo_create(t_manager *manager, int id)
 	philo->id = id;
 	philo->manager = manager;
 	philo->nb_eat = 0;
+	philo->alive = true;
 	philo->right_fork = NULL;
 	if (id > 1 && id <= manager->nb_philo)
 		philo->prev_philo = manager->philo[id - 1];

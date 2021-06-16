@@ -40,11 +40,10 @@ void	*philo_main(void *philo_raw)
 	philo = philo_raw;
 	philo->timestamp = get_time_ms();
 	philo->last_eat = get_time_ms();
-	philo->alive = true;
 	pthread_create(&philo->monitor.pthread, NULL, philo_monitor, philo);
 	if (PRINT_SPAWN)
 		philo_log(philo, MSG_SPAWN);
-	while (philo->alive && !philo->manager->die)
+	while (philo->alive && (!philo->manager->die || philo->nb_eat != -1))
 	{
 		philo_eat(philo);
 		philo_sleep(philo);

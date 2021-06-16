@@ -22,7 +22,7 @@ void	set_error(int code, t_manager *manager)
 
 static void	delete_philos(t_manager *manager)
 {
-	int			i;
+	int	i;
 
 	i = 1;
 	while (i <= manager->nb_philo)
