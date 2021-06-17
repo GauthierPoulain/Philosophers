@@ -27,7 +27,6 @@ int	main(int argc, char *argv[])
 		while (!manager.die && (manager.nb_eat == -1
 				|| (manager.nb_eat != -1 && check_threads_alive(&manager))))
 			usleep(10);
-		ft_putstr(STDOUT_FILENO, "end of simulation\n");
 		close_philo(&manager);
 	}
 	return (manager.error);
