@@ -44,7 +44,6 @@ PHILO_LIB = \
 
 PHILO_SRC = \
 	./src/close.c \
-	./src/forks.c \
 	./src/init.c \
 	./src/main.c \
 	./src/philo_die.c \
