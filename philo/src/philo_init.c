@@ -31,6 +31,7 @@ void	philo_spawn(t_manager *manager)
 	{
 		pthread_create(&manager->philo[i]->pthread, NULL,
 			philo_main, manager->philo[i]);
+		usleep(10);
 		i++;
 	}
 }
